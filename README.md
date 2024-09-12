@@ -15,6 +15,8 @@ docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5
 # add the string in .env file
 # start and stop easily with docker
 docker start my-postgres
+
+npx prisma migrate dev #to deploye prisma migations to your database
 ```
 4. For starting the project:
 ```
