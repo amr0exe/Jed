@@ -12,7 +12,7 @@ git clone https://github.com/amr0exe/Jed.git
 3. Start a Postgres db using docker:
 ```
 docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
-
+# add the string in .env file
 # start and stop easily with docker
 docker start my-postgres
 ```
