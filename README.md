@@ -1,6 +1,6 @@
 <h1 align="center">Jed</h1>
+Jed is a blogging platform providing varied level headings, direct image insertion through image link address, interactive posts with comments.
 
-### Table of contents
 ---
 
 1. Clone the repository:
