@@ -1,34 +1,9 @@
 import Navbar from "@/layout/Navbar"
-import { useEffect } from "react"
-import axios from "axios"
-import { backendURL } from "@/hooks"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useBlogs } from "@/hooks"
 
 function Home() {
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-        if (!token) {
-            navigate("/signin")
-            return
-        }
-
-        axios.get(`${backendURL}/api/v1/blog`, {
-            headers: {
-                Authorization: `Bearer ${token}` 
-            }
-        })
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(err => {
-            console.log("error while validating", err)
-            navigate("/signin")
-        })
-    }, [navigate])
 
     const {loading, blogs} = useBlogs()
     if(loading || !blogs ) {
@@ -44,7 +19,7 @@ function Home() {
             <Navbar />
 
             <div className="w-[60vw] h-[90vh] mx-auto grid grid-cols-4">
-                <div className="font-mono col-span-3 flex flex-col mt-12">
+                <div className="font-mono flex flex-col mt-12 col-span-4 lg:col-span-3">
                     {blogs.map((post) => (
                         <SingleBlogCard 
                             id = {post["id"]} 
@@ -56,7 +31,7 @@ function Home() {
                     {/* <SingleBlogCard /> */}
                 </div>
 
-                <div className="font-mono text-2xl font-semibold col-span-1 border-l-2 border-black pl-4 pt-7">
+                <div className="font-mono text-2xl font-semibold col-span-1 border-l-2 border-black pl-4 pt-7 hidden lg:block">
                     Tags
                 </div>
             </div>
@@ -85,7 +60,7 @@ function SingleBlogCard({id, author, title, content}: CardProps) {
     }
                         
     return (
-        <div className="h-1/3 w-[90%] mb-4">
+        <div className="h-1/3 w-[90%] mb-10">
             <div className="flex justify-between items-center">
                 <div className="bg-blue-400 h-6 w-20 rounded-sm flex justify-center items-center tracking-tighter text-sm text-black font-semibold">
                     articles

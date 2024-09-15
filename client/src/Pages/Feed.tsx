@@ -1,52 +1,138 @@
-import Navbar from "@/layout/Navbar"
-import edjsHTML from "editorjs-html"
-import { useBlog } from "@/hooks"
-import { useParams } from "react-router-dom"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Navbar from "@/layout/Navbar";
+import edjsHTML from "editorjs-html";
+import { useBlog, useCreateComment } from "@/hooks";
+import { useState, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Bookmark, Ellipsis, Heart, SquareArrowOutUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function Feed() {
-    const {id} = useParams()
-    const {loading, blog} = useBlog({id : id || ""})
-    console.log(blog)
+    const { id } = useParams();
+    const [comment, setComment] = useState("");
+    const { loading, blog, comments, refetchComments } = useBlog({ id: id || "" });
+    const { createComment, commentLoading } = useCreateComment();
 
-    if(loading || !blog) {
-        return <div>
-            <p className="text-5xl font-semibold">Loading</p>
-        </div>
+    const handleSubmit = useCallback(() => {
+        if (comment.trim()) {
+            createComment({
+                id: Number(id),
+                content: comment,
+                onSuccess: refetchComments, // Call refetchComments on success
+            });
+            setComment(""); // Clear the input after submission
+        }
+    }, [comment, id, createComment, refetchComments]);
+
+    if (loading || !blog) {
+        return (
+            <div>
+                <p className="text-5xl font-semibold">Loading</p>
+            </div>
+        );
     }
 
-    console.log(blog)
-    const author = blog["author"]
-    const edjsParser = edjsHTML()
-    const htmlArray =  edjsParser.parse(blog["content"]) //since editorjs-data is saved as array of block
-    const htmlContent = htmlArray.join("")
+    const author = blog["author"];
+    const edjsParser = edjsHTML();
+    const htmlArray = edjsParser.parse(blog["content"]); // since editorjs-data is saved as array of block
+    const htmlContent = htmlArray.join("");
 
-    return <div className="w-screen h-screen">
-        <Navbar />
+    return (
+        <div className="w-screen h-screen overflow-x-hidden">
+            <Navbar />
 
-        <div className="bg-slate-100 grid grid-cols-2 pl-60">
+            <div className="bg-slate-100">
+                <div className="text-black font-mono flex justify-between pt-5 w-2/3 mx-auto pb-5">
+                    <div className="flex items-center">
+                        <Avatar className="border border-gray-300 text-xl">
+                            <AvatarImage src="#"></AvatarImage>
+                            <AvatarFallback>{author["username"][0]}</AvatarFallback>
+                        </Avatar>
 
-            <div className="decentfix mx-auto  pt-4 font-mono h-[90vh] w-full">
-                <div dangerouslySetInnerHTML={{ __html: htmlContent}}></div>
-            </div>
+                        <div className="flex">
+                            <p className="text-lg font-semibold ml-2">{author["username"]}</p>
+                            <p className="tracking-tighter text-xs font-extralight text-slate-600 ml-1">
+                                Follow
+                            </p>
+                        </div>
+                    </div>
 
-            <div className="text-gray-500 font-mono mt-14">
-                <div className="flex items-center">
-                    <Avatar className="border border-gray-300 text-xl">
-                        <AvatarImage src="#"></AvatarImage>
-                        <AvatarFallback>{author["username"][0]}</AvatarFallback>
-                    </Avatar>
+                    <div>
+                        <p className="tracking-tighter text-xs text-slate-600">9 min read</p>
+                        <p className="tracking-tighter text-xs text-slate-600">Aug-8, 2024</p>
+                    </div>
+                </div>
 
-                    <p className="text-lg font-semibold ml-2">{author["username"]}</p>
+                <div className="border-slate-300 border-b border-t w-2/3 mx-auto flex justify-between items-center">
+                    <div className="flex py-2 items-center gap-1">
+                        <Heart size={16} color="#616161" strokeWidth={0.5} />
+                        <p className="text-xs text-slate-700 tracking-tighter">130</p>
+                    </div>
+                    <div className="flex gap-2">
+                        <Bookmark size={16} color="#616161" strokeWidth={1} />
+                        <SquareArrowOutUpRight size={16} color="#616161" strokeWidth={1.75} />
+                        <Ellipsis size={16} color="#616161" strokeWidth={1.5} />
+                    </div>
+                </div>
+
+                <div className="decentfix mx-auto font-mono h-[90vh] w-2/3">
+                    <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>
+                </div>
+
+                <div className="border-slate-400 border-b w-2/3 mx-auto flex justify-between items-center">
+                    <p className="font-mono text-xl font-semibold">Comments</p>
+                </div>
+
+                <div className="w-2/3 mx-auto">
+                    <div className="w-full flex justify-center items-baseline gap-3">
+                        <input
+                            type="text"
+                            className="w-2/3 h-10 mt-3 pl-3 rounded-sm outline-none"
+                            placeholder="create comment..."
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                        <Button size={"sm"} onClick={handleSubmit}>
+                            {commentLoading ? "..." : "Submit"}
+                        </Button>
+                    </div>
+
+                    {comments?.length > 0 ? (
+                        comments.map((now) => (
+                            <CommmentCard
+                                id={now.id}
+                                username={now.user.username}
+                                content={now.content}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-center mt-5 font-mono font-semibold">No Comments available!</p>
+                    )}
                 </div>
             </div>
-            
-
-            {/* <div className="border-b bg-slate-400 w-[90vw] mx-auto"></div> */}
-            {/* comment section  <div></div>*/}
         </div>
-
-    </div>
+    );
 }
 
-export default Feed
+export default Feed;
+
+function CommmentCard({ id, username, content }: { id: number; username: string; content: string }) {
+    return (
+        <div className="flex items-center pt-3" key={id}>
+            <Avatar className="border border-gray-300 text-xl">
+                <AvatarImage src="#"></AvatarImage>
+                <AvatarFallback>{username[0]}</AvatarFallback>
+            </Avatar>
+
+            <div className="flex flex-col ml-2">
+                <div className="flex items-center font-mono">
+                    <p className="text-base font-semibold">{username}</p>
+                    <p className="tracking-tighter text-xs font-extralight text-slate-600 ml-1">
+                        Follow
+                    </p>
+                </div>
+                <p className="text-sm 1text-slate-800">{content}</p>
+            </div>
+        </div>
+    );
+}

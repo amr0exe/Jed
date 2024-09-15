@@ -12,14 +12,15 @@ function Signup() {
     const [email, setEmail] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
     async function sendCred() {
         try{
-            console.log("there")
+            setIsLoading(true)
             const response = await axios.post(`${backendURL}/api/v1/user/signup`, {email, username, password})
-            console.log("here")
             const token = response.data
+            setIsLoading(false)
             localStorage.setItem("token", token)
             navigate("/signin")
         } 
@@ -29,7 +30,7 @@ function Signup() {
     }
     return (
         <div className="bg-slate-200 w-screen h-screen flex justify-center items-center">
-            <div className="w-full max-w-lg p-6 bg-white rounded shadow-md mx-4 md:mx-auto md:min-h-[65vh]">
+            <div className="w-full max-w-lg p-6 bg-white rounded shadow-md mx-4 md:mx-auto md:min-h-fit">
                 <div className="w-full flex items-center justify-between mb-4">
                     <div className="flex items-center">
                         <p className="font-bold text-4xl">J</p>
@@ -82,7 +83,7 @@ function Signup() {
                         <p className="text-sm text-blue-500 cursor-pointer">Forgot your password?</p>
                     </div>
 
-                    <Button className="mt-4" onClick={sendCred}>Submit</Button>
+                    <Button className="mt-4 mb-8" onClick={sendCred}>{isLoading ? "signingUp..." : "Submit"}</Button>
                 </div>
             </div>
         </div>

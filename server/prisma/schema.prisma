@@ -16,9 +16,10 @@ datasource db {
 model User {
   id Int       @id @default(autoincrement())
   email String @unique
-  username String
+  username String @unique
   password String
   blogs Blog[]
+  commments Comments[]
 }
 
 model Blog {
@@ -27,4 +28,14 @@ model Blog {
   author User @relation(fields: [authorId], references: [id])
   authorId Int
   content Json
+  comments Comments[]
+}
+
+model Comments {
+  id      Int @id @default(autoincrement())
+  content String
+  blogId  Int
+  userId  Int
+  blog    Blog @relation(fields: [blogId], references: [id])
+  user    User @relation(fields: [userId], references: [id])
 }

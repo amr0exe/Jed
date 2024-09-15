@@ -1,12 +1,12 @@
 import express from "express"
-import authMiddlewawre from "../middlewares/authMIddleware.js"
+import authMiddleware from "../middlewares/authMiddleware.js"
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient();
 const blogRouter = express.Router()
 
 // createBlogpost
-blogRouter.post("/", authMiddlewawre, async (req, res) => {
+blogRouter.post("/", authMiddleware, async (req, res) => {
     const { title, content } = req.body
     const authorId = req.body.user.id
 
@@ -24,7 +24,7 @@ blogRouter.post("/", authMiddlewawre, async (req, res) => {
 })
 
 //updateBlogPost
-blogRouter.put("/", async (req, res) => {
+blogRouter.put("/", authMiddleware, async (req, res) => {
     const body = await req.body
 
     const blog = await prisma.blog.update({
@@ -43,7 +43,7 @@ blogRouter.put("/", async (req, res) => {
 })
 
 //getEveryBlog
-blogRouter.get("/bulk", async (req, res) => {
+blogRouter.get("/bulk", authMiddleware,async (req, res) => {
     const blogs = await prisma.blog.findMany({
         select: {
             id: true,
@@ -53,8 +53,18 @@ blogRouter.get("/bulk", async (req, res) => {
                 select: {
                     username: true,
                 }
+            },
+            comments: {
+                select: {
+                    id: true,
+                    content: true,
+                    user: {
+                        select: {
+                            username: true
+                        }
+                    }
+                }
             }
-
         }
     })
 
@@ -64,7 +74,7 @@ blogRouter.get("/bulk", async (req, res) => {
 })
 
 //getSingleBlogOnly
-blogRouter.get("/:id", async (req, res) => {
+blogRouter.get("/:id", authMiddleware, async (req, res) => {
     const id = req.params.id
 
     try {
@@ -72,16 +82,22 @@ blogRouter.get("/:id", async (req, res) => {
             where: {
                 id: Number(id)
             },
-            select: {
-                id: true,
-                title: true,
-                content: true,
+            include: { 
                 author: {
                     select: {
                         username: true,
                     }
+                },
+                comments: {
+                    include: {
+                        user: {
+                            select: {
+                                username: true,
+                            }
+                        }
+                    }
                 }
-            }
+            },
         })
 
         return res.json({
@@ -95,10 +111,36 @@ blogRouter.get("/:id", async (req, res) => {
 
 })
 
+//createComment
+blogRouter.post("/:id/comment", authMiddleware ,async (req, res) => {
+    const blogId = parseInt(req.params.id)
+    const authorId = req.body.user.id
+    const { content } = req.body
+
+    if(isNaN(blogId)) {
+        return res.status(404).json({ error: "invalid blogId" })
+    }
+    if(!content || !authorId) {
+        return res.status(400).json({ error: "content and authorid are required" })
+    }
+
+    try {
+        const comment = await prisma.comments.create({
+            data: {
+                content: content,
+                blogId: blogId,
+                userId: authorId
+            }
+        })
+        res.status(201).json({ msg: "sucess", comment})
+    } catch(err) {
+        res.status(500).json({ error: "Error: failed to create comment..."})
+    }
+})
 
 
 //check Server
-blogRouter.get("/", authMiddlewawre, async(req, res) => {
+blogRouter.get("/", authMiddleware, async(req, res) => {
     console.log("heyy from server!")
 })
 

@@ -11,14 +11,17 @@ import { useNavigate } from "react-router-dom"
 function Signin() {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
     async function handleSubmit() {
         try {
+            setIsLoading(true)
             const response = await axios.post(`${backendURL}/api/v1/user/signin`, {
                 username, password
             })
             const token = response.data
+            setIsLoading(false)
             localStorage.setItem("token", token)
             navigate("/")
         }
@@ -30,7 +33,7 @@ function Signin() {
 
     return (
         <div className="bg-slate-200 w-screen h-screen flex justify-center items-center">
-            <div className="w-full max-w-lg p-6 bg-white rounded shadow-md mx-4 md:mx-auto md:min-h-[65vh]">
+            <div className="w-full max-w-lg p-6 bg-white rounded shadow-md mx-4 md:mx-auto md:min-h-fit">
                 <div className="w-full flex items-center justify-between mb-4">
                     <div className="flex items-center">
                         <p className="font-bold text-4xl">J</p>
@@ -75,7 +78,7 @@ function Signin() {
                         <p className="text-sm text-blue-500 cursor-pointer">Forgot your password?</p>
                     </div>
 
-                    <Button className="mt-4" onClick={handleSubmit}>Submit</Button>
+                    <Button className="mt-4 mb-8" onClick={handleSubmit}>{isLoading ? "signingIn..." : "Submit"}</Button>
                 </div>
             </div>
         </div>

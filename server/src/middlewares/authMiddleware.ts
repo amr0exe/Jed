@@ -1,8 +1,9 @@
 import {Request, Response, NextFunction} from "express"
 import jwt from "jsonwebtoken"
 
-const authMiddlewawre = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization']
+    console.log(authHeader)
 
     //check if token exists or it's in proper format
     if(!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -32,5 +33,4 @@ const authMiddlewawre = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-
-export default authMiddlewawre
+export default authMiddleware
