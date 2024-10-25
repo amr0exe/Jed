@@ -12,16 +12,17 @@ git clone https://github.com/amr0exe/Jed.git
 3. Start a Postgres db using docker:
 ```
 docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
-# add the string in .env file
+# add the connection-string in .env file
 # start and stop easily with docker
 docker start my-postgres
 
-npx prisma migrate dev #to deploye prisma migations to your database
+npx prisma migrate deploy #to deploye prisma migations to your database
 ```
 4. For starting the project:
 ```
 npm run dev # on client folder
 
+[following command requires typescript, nodemon to installed ]
 tsc -b      # for transpiling ts-code
 nodemon dist/index.js # for running server 
 ```
