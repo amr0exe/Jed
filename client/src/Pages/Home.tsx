@@ -18,8 +18,8 @@ function Home() {
         <div className="w-screen h-screen overflow-x-hidden">
             <Navbar />
 
-            <div className="w-[60vw] h-[90vh] mx-auto grid grid-cols-4">
-                <div className="font-mono flex flex-col mt-12 col-span-4 lg:col-span-3">
+            <div className="w-[70vw] h-[90vh] mx-auto grid grid-cols-5">
+                <div className="font-mono flex flex-col mt-12 col-span-5 md:col-span-3">
                     {blogs.map((post) => (
                         <SingleBlogCard 
                             id = {post["id"]} 
@@ -31,8 +31,24 @@ function Home() {
                     {/* <SingleBlogCard /> */}
                 </div>
 
-                <div className="font-mono text-2xl font-semibold col-span-1 border-l-2 border-black pl-4 pt-7 hidden lg:block">
-                    Tags
+                <div className="font-mono col-span-2 border-l-[1px] border-gray-400 pl-4 pt-7 hidden md:block">
+                    <p className="font-semibold text-2xl text-slate-700">Tags</p>
+                    <div className="grid grid-rows-3 grid-cols-3 gap-2 text-slate-600 text-xs mt-3">
+                        <div className="w-fit px-2 py-1 rounded-lg bg-slate-300 ">Solana</div>
+                        <div className="w-fit px-2 py-1 rounded-lg bg-slate-300 ">pub/sub</div>
+                        <div className="w-fit px-2 py-1 rounded-lg bg-slate-300 ">kubernetes</div>
+                        <div className="w-fit px-2 py-1 rounded-lg bg-slate-300 ">zai</div>
+                    </div>
+
+                    <div className="w-full tracking-tighter">
+                        <p className="font-semibold text-2xl text-slate-700">Recommended</p>
+                        <div className="text-sm ml-5 text-slate-500 mt-3">
+                            <p>1. Interesting Error handling of go</p>
+                            <p className="mt-1">2. Docker & Maker file comparison.</p>
+                            <p className="mt-1">3. three.js or bablyon.js</p>
+                            <p className="mt-1">3. (OpenGl or Vulkan) for beginers</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

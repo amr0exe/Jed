@@ -14,7 +14,7 @@ function Navbar() {
             </Link>
 
             <div className="flex items-center gap-5">
-                <Link to="/write" className="font-medium opacity-75">write</Link>
+                <Link to="/write" className="font-medium opacity-75 font-mono tracking-tighter">write</Link>
                 
 
                 <Avatar>

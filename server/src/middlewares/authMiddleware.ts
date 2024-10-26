@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization']
-    console.log(authHeader)
+    //console.log(authHeader)
 
     //check if token exists or it's in proper format
     if(!authHeader || !authHeader.startsWith("Bearer ")) {
