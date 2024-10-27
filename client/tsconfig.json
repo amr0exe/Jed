@@ -27,8 +27,17 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+  
+    // type setting for editorjs
+    "typeRoots" : [
+      "./node_modules/@types",
+      "./src/types"
+    ],
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "src/types/editorjs.d.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
