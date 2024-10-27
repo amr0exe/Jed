@@ -76,7 +76,7 @@ function SingleBlogCard({id, author, title, content}: CardProps) {
     }
                         
     return (
-        <div className="h-1/3 w-[90%] mb-10">
+        <div className="h-1/3 w-[90%] mb-14">
             <div className="flex justify-between items-center">
                 <div className="bg-blue-400 h-6 w-20 rounded-sm flex justify-center items-center tracking-tighter text-sm text-black font-semibold">
                     articles

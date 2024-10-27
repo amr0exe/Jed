@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom"
 import axios from "axios"
-import { backendURL } from "@/hooks"
 import { useNavigate } from "react-router-dom"
 
 function Signin() {
@@ -17,7 +16,7 @@ function Signin() {
     async function handleSubmit() {
         try {
             setIsLoading(true)
-            const response = await axios.post(`${backendURL}/api/v1/user/signin`, {
+            const response = await axios.post(`/api/v1/user/signin`, {
                 username, password
             })
             const token = response.data

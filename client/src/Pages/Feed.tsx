@@ -4,7 +4,6 @@ import { useBlog, useCreateComment } from "@/hooks";
 import { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bookmark, Ellipsis, Heart, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function Feed() {
@@ -128,7 +127,7 @@ function CommmentCard({ id, username, content }: { id: number; username: string;
                        <sup>Follow</sup> 
                     </p>
                 </div>
-                <p className="text-sm font-semibold  text-slate-500">{content}</p>
+                <p className="text-sm font-semibold text-slate-500">{content}</p>
             </div>
         </div>
     );

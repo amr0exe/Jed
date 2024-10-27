@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios"
 
-export const backendURL = "http://localhost:3000"
 export interface Blogs{
     "content": JSON;
     "title": string;
@@ -36,7 +35,7 @@ export const useBlog = ({ id }: { id: string }) => {
         }
 
         try {
-            const response = await axios.get(`${backendURL}/api/v1/blog/${id}`, {
+            const response = await axios.get(`/api/v1/blog/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -80,7 +79,7 @@ export const useBlogs = () => {
             return
         }
 
-        axios.get(`${backendURL}/api/v1/blog/bulk`, {
+        axios.get(`/api/v1/blog/bulk`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -110,7 +109,7 @@ export const useCreateComment = () => {
         const token = localStorage.getItem("token");
 
         try {
-            await axios.post(`${backendURL}/api/v1/blog/${id}/comment`, { content }, {
+            await axios.post(`/api/v1/blog/${id}/comment`, { content }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
