@@ -3,6 +3,17 @@ Jed is a blogging platform providing varied level headings, direct image inserti
 
 ---
 
+
+<h2 align="center">Important Notice ⚠️ <br /> Note: Initial Load may be slow</h2>
+
+<span align="center"> 
+  
+_It's a free instance which will spin down with inactivity, which can delay requests by 50 seconds or more._ 
+
+</span>
+
+---
+
 1. Clone the repository:
 ``` bash
 git clone https://github.com/amr0exe/Jed.git
