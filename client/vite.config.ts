@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: https://jed-tw3l.onrender.com,
+          target: 'https://jed-tw3l.onrender.com',
           changeOrigin: true,
         },
       },
