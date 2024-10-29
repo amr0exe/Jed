@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import EditorJS, { OutputData } from "@editorjs/editorjs"
+import List from "@editorjs/list"
 import Header from "@editorjs/header"
 import axios from "axios"
 import { backendurl } from "@/hooks"
@@ -33,6 +34,13 @@ function Editor() {
             config: {
               placeholder: "heading",
               defaultLevel: 3,
+            }
+          },
+
+          list: {
+            class: List,
+            config: {
+              defaultStyle: 'unordered'
             }
           },
         },
