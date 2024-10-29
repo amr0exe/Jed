@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { backendurl } from "@/hooks"
 
 function Signin() {
     const [username, setUsername] = useState<string>("")
@@ -16,7 +17,7 @@ function Signin() {
     async function handleSubmit() {
         try {
             setIsLoading(true)
-            const response = await axios.post(`/api/v1/user/signin`, {
+            const response = await axios.post(`${backendurl}/api/v1/user/signin`, {
                 username, password
             })
             const token = response.data

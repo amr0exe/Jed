@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { backendurl } from "@/hooks"
 
 function Signup() {
     const [email, setEmail] = useState<string>("")
@@ -17,7 +18,7 @@ function Signup() {
     async function sendCred() {
         try{
             setIsLoading(true)
-            const response = await axios.post(`/api/v1/user/signup`, {email, username, password})
+            const response = await axios.post(`${backendurl}/api/v1/user/signup`, {email, username, password})
             const token = response.data
             setIsLoading(false)
             localStorage.setItem("token", token)
