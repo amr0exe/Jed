@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import EditorJS, { OutputData } from "@editorjs/editorjs"
 import Header from "@editorjs/header"
 import axios from "axios"
+import { backendurl } from "@/hooks"
 
 interface EditorConfig {
   holder: string;
@@ -75,7 +76,7 @@ function Editor() {
       editorRef.current.save()
         .then(async (outputData: OutputData) => {
           const token = localStorage.getItem("token")
-          const response = await axios.post(`/api/v1/blog/`, {
+          const response = await axios.post(`${backendurl}/api/v1/blog/`, {
             title: outputData.blocks[0].data.text,
             content: outputData
           }, {
